@@ -42,12 +42,12 @@ resource "snowflake_table" "table" {
 }
 
 resource "snowflake_dynamic_table" "demo_table" {
+  name     = "DEMO_TABLE_DT"
   database = "DEMO_MART"
   schema   = "PUBLIC"
-  name     = "DEMO_TABLE_DT"
   warehouse = "COMPUTE_WH"
   target_lag {
-    maximum_duration = "1 hour"
+    maximum_duration = "1 minute"
   }
   query     = file("${path.module}/target/compiled/snowflake_information_mart/models/demo_table_dt.sql")
 }
