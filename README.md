@@ -10,7 +10,7 @@ CREATE DATABASE DEMO_MART;
 
 ```
 
-Next create the necessary env vars to login with:
+Next create the necessary env vars for tf to login in a file `secret.env`:
 
 ```shell
 export TF_VAR_snowflake_user="you"
@@ -37,15 +37,22 @@ brew install python
 softwareupdate --install-rosetta
 python3 -m venv dbt-env
 source dbt-env/bin/activate
-pip install dbt-core dbt-snowflake
+pip install -r requirements.txt
 # This must output Core not Cloud:
 dbt --version
 ```
 
-You need to setup your dbt-core profile with the same settings then compile the models with 
+Then use `dbt debug` to ensure you have a working profile.
 
 You must then init the local statefile for the first time!
 
 ```shell
 terraform apply -lock=false
+```
+
+From now on you can run dbt compile then terraform plan and apply using the helper script:
+
+```shell
+source dbt-env/bin/activate
+./data-tools.py  
 ```

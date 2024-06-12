@@ -4,3 +4,4 @@ terraform.tfstate*
 dbt-env/
 logs/
 target/
+tfplan
