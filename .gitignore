@@ -1,3 +1,6 @@
 secret*
 terraform.tfstate*
 .terraform*
+dbt-env/
+logs/
+target/

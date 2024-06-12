@@ -1,0 +1,9 @@
+columns:
+  - name: "ID"
+    type: "NUMBER"
+  - name: "NAME"
+    type: "STRING"
+  - name: "DOB"
+    type: "DATE"
+  - name: "INSERTED_AT"
+    type: "TIMESTAMP"

@@ -31,6 +31,7 @@ resource "snowflake_table" "table" {
   database = "DEMO_MART"
   schema   = "PUBLIC"
   name     = "DEMO_TABLE"
+  change_tracking = true
   dynamic "column" {
     for_each = yamldecode(file("${path.module}/DEMO_TABLE.yaml"))["columns"]
     content {
@@ -38,4 +39,15 @@ resource "snowflake_table" "table" {
       type = column.value["type"]
     }
   }
+}
+
+resource "snowflake_dynamic_table" "demo_table" {
+  database = "DEMO_MART"
+  schema   = "PUBLIC"
+  name     = "DEMO_TABLE_DT"
+  warehouse = "COMPUTE_WH"
+  target_lag {
+    maximum_duration = "1 hour"
+  }
+  query     = file("${path.module}/target/compiled/snowflake_information_mart/models/demo_table_dt.sql")
 }

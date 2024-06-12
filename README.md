@@ -30,6 +30,20 @@ tfenv install 1.8.5
 tfenv use 1.8.5
 ```
 
+Setup dbt-core
+
+```shell
+brew install python
+softwareupdate --install-rosetta
+python3 -m venv dbt-env
+source dbt-env/bin/activate
+pip install dbt-core dbt-snowflake
+# This must output Core not Cloud:
+dbt --version
+```
+
+You need to setup your dbt-core profile with the same settings then compile the models with 
+
 You must then init the local statefile for the first time!
 
 ```shell
