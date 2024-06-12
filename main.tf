@@ -25,3 +25,17 @@ resource "snowflake_schema" "sources_schema" {
   name     = "SOURCES"
   comment  = "Schema for source data"
 }
+
+# create the a table in the public schema
+resource "snowflake_table" "table" {
+  database = "DEMO_MART"
+  schema   = "PUBLIC"
+  name     = "DEMO_TABLE"
+  dynamic "column" {
+    for_each = yamldecode(file("${path.module}/DEMO_TABLE.yaml"))["columns"]
+    content {
+      name = column.value["name"]
+      type = column.value["type"]
+    }
+  }
+}
