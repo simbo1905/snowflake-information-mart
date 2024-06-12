@@ -15,15 +15,29 @@ ALTER WAREHOUSE COMPUTE_WH SET AUTO_SUSPEND = 60;
 Next create the necessary env vars for tf to login in a file `secret.env`:
 
 ```shell
-export TF_VAR_snowflake_user="you"
-# you must set this:
-export TF_VAR_snowflake_password="xxxx"
+export SNOWFLAKE_USER="you"
+export SNOWFLAKE_PASSWORD="password"
+
 # use role orgadmin; show organization accounts; 
 # look at the account_locator_url and use the first three parts. for example:
 # https://aq60000.uk-south.azure.snowflakecomputing.com
 # would mean you have to set aq60000.uk-south.azure
-export TF_VAR_snowflake_account="your_account.cloue_region.cloud"
+export SNOWFLAKE_ACCOUNT="aq68616.uk-south.azure"
+
+
+# terraform need them in a different format
+export TF_VAR_snowflake_account="$SNOWFLAKE_ACCOUNT"
+export TF_VAR_snowflake_user="$SNOWFLAKE_USER"
+export TF_VAR_snowflake_password="$SNOWFLAKE_PASSWORD"
+
+# customise these defaults for dbt which you can override by model or folder.
+export SNOWFLAKE_ROLE=ACCOUNTADMIN
+export SNOWFLAKE_WAREHOUSE=COMPUTE_WH
+export SNOWFLAKE_DATABASE=DEMO_DB
+export SNOWFLAKE_SCHEMA=PUBLIC
 ```
+
+Note you must `source secret.env` to set these in our shell. 
 
 Setup Terraform with:
 
@@ -44,7 +58,7 @@ pip install -r requirements.txt
 dbt --version
 ```
 
-Then use `dbt debug` to ensure you have a working profile.
+Then use `dbt debug --profiles-dir .` to ensure you have a working profile.
 
 You must then init the local statefile for the first time!
 
@@ -62,5 +76,5 @@ source dbt-env/bin/activate
 ## TODO
 
 - [X] Create a static table using a yaml file for columns.
-- [X] Create a dynamic table using dbt templating. 
+- [X] Create a dynamic table using dbt templating.
 - [ ] Create a historised snapshot of a table using stream and task.

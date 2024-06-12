@@ -36,7 +36,7 @@ def main():
 
     # Step 1: Run dbt compile
     print("Running dbt compile...")
-    run_command("dbt compile", env=env)
+    run_command("dbt compile --profiles-dir .", env=env)
 
     # Step 2: Run terraform plan and output to a plan file
     print("Running terraform plan...")

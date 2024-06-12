@@ -5,3 +5,4 @@ dbt-env/
 logs/
 target/
 tfplan
+.user.yml
