@@ -47,7 +47,7 @@ resource "snowflake_dynamic_table" "demo_table" {
   schema   = "PUBLIC"
   warehouse = "COMPUTE_WH"
   target_lag {
-    maximum_duration = "2 minute"
+    maximum_duration = "1 minutes"
   }
   query     = file("${path.module}/target/compiled/snowflake_information_mart/models/demo_table_dt.sql")
 }

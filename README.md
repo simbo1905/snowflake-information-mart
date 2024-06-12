@@ -8,6 +8,8 @@ First set a demo db
 -- Create database
 CREATE DATABASE DEMO_MART;
 
+-- you may want to set the default wh to suspect after 60s
+ALTER WAREHOUSE COMPUTE_WH SET AUTO_SUSPEND = 60;
 ```
 
 Next create the necessary env vars for tf to login in a file `secret.env`:

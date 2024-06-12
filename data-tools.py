@@ -5,7 +5,7 @@ import json
 import os
 from dotenv import load_dotenv
 
-def run_command(command, env=None):
+def run_command(command, env=None, log_output=True):
     """Run a shell command and return the output."""
     print(f"Running command: {command}")
     result = subprocess.run(command, shell=True, capture_output=True, text=True, env=env)
@@ -13,7 +13,8 @@ def run_command(command, env=None):
         print(f"Error running command: {command}")
         print(result.stderr)
         exit(1)
-    print(result.stdout)
+    if log_output:    
+        print(result.stdout)
     return result.stdout
 
 def main():
@@ -34,16 +35,21 @@ def main():
         exit(1)
 
     # Step 1: Run dbt compile
-    # print("Running dbt compile...")
-    # run_command("dbt compile", env=env)
+    print("Running dbt compile...")
+    run_command("dbt compile", env=env)
 
     # Step 2: Run terraform plan and output to a plan file
     print("Running terraform plan...")
     plan_output = run_command("terraform plan -out=tfplan", env=env)
 
+    # if the plan output contains "No changes.", exit the script
+    if "No changes." in plan_output:
+        print("No changes detected. Exiting.")
+        exit(0)
+
     # Step 3: Check the plan for changes or destroy actions
     print("Checking terraform plan for changes...")
-    show_plan_output = run_command("terraform show -json tfplan", env=env)
+    show_plan_output = run_command("terraform show -json tfplan", env=env, log_output=False)
     plan_json = json.loads(show_plan_output)
 
     changes = False
