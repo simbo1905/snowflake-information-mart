@@ -56,3 +56,9 @@ From now on you can run dbt compile then terraform plan and apply using the help
 source dbt-env/bin/activate
 ./data-tools.py  
 ```
+
+## TODO
+
+- [X] Create a static table using a yaml file for columns.
+- [X] Create a dynamic table using dbt templating. 
+- [ ] Create a historised snapshot of a table using stream and task.
